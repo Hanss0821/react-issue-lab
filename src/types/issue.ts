@@ -49,6 +49,7 @@ export type MyPick<T, K extends keyof T> = {
   [P in K]: T[P];
 };
 
-export type MyOmit<T, K extends keyof T> = {
+// K不做约束，不属于直接忽略掉
+export type MyOmit<T, K> = {
   [P in keyof T as P extends K ? never : P]: T[P];
 };
