@@ -42,3 +42,13 @@ export function createIssue(input: CreateIssueInput): Issue {
  * 要求：找到指定 ID 的 Issue，将它的 status 修改为传入的状态，
  * 其余 Issue 对象保持原引用，且不能直接修改原数组。
  */
+
+// keyof的作用在于将所有的键构成新的联合类型
+export type MyPick<T, K extends keyof T> = {
+  // K是联合类型 in 关键字把联合类型遍历映射出来
+  [P in K]: T[P];
+};
+
+export type MyOmit<T, K extends keyof T> = {
+  [P in keyof T as P extends K ? never : P]: T[P];
+};
