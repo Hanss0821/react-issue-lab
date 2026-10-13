@@ -5,9 +5,11 @@ type IssueDetailProps = {
 };
 
 export function IssueDetail(props: IssueDetailProps) {
+  // Selector取数据
   const issue = useIssueStore((state) =>
     state.issues.find((item) => item.id === props.selectedId),
   );
+  // Action更新数据
   const updateIssueStatus = useIssueStore((state) => state.updateIssueStatus);
   const handleStartClick = () => {
     if (!issue) return;
@@ -29,14 +31,14 @@ export function IssueDetail(props: IssueDetailProps) {
           </div>
           <div className="panel">
             <button className="btn-start" onClick={handleStartClick}>
-              开始
+              Start
             </button>
             <button
               className="btn-complete"
               disabled={issue.status === "done"}
               onClick={handleCompleteClick}
             >
-              完成
+              Complete
             </button>
           </div>
         </>

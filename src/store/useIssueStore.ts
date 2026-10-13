@@ -7,6 +7,7 @@ type IssueStore = {
   updateIssueStatus: (id: Issue["id"], status: IssueStatus) => void;
 };
 // 两层调用主要是为了 TypeScript 类型推导
+// Store 存数据
 export const useIssueStore = create<IssueStore>()((set) => ({
   issues: [
     createIssue({ title: "01" }),
