@@ -3,6 +3,7 @@ import { useState } from "react";
 import type { Issue, IssueStatus } from "./types/issue";
 import { createIssue } from "./types/issue";
 import { IssueList } from "./components/IssueList";
+import { IssueStats } from "./components/IssueStats";
 function App() {
   const [issueList, setIssueList] = useState<Issue[]>([
     createIssue({ title: "01" }),
@@ -26,6 +27,7 @@ function App() {
   return (
     <main>
       <IssueList issues={issueList} onStatusChange={updateIssueStatus} />
+      <IssueStats issues={issueList} />
     </main>
   );
 }

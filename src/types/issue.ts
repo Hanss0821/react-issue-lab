@@ -33,7 +33,7 @@ export function createIssue(input: CreateIssueInput): Issue {
  * 3.Single Source of Truth
  * 当两个类型之间存在稳定、明确的结构关系时，使用工具类型表达这种关系
  *
- * 两个工具使用 （待Todo：练习两个工具的自定义实现）
+ * 两个工具使用 （Todo：练习两个工具的自定义实现）
  * 1.Pick 从结构类型中取出目标字段类型
  * 2.Omit 从结构类型中剔除目标字段类型
  */
