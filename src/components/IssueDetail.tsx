@@ -1,21 +1,22 @@
-import type { Issue, IssueStatus } from "../types/issue";
-
+import type { Issue } from "../types/issue";
+import { useIssueStore } from "../store/useIssueStore";
 type IssueDetailProps = {
-  issue: Issue | undefined;
-  onStatusChange: (id: Issue["id"], status: IssueStatus) => void;
+  selectedId: Issue["id"] | null;
 };
 
 export function IssueDetail(props: IssueDetailProps) {
-  const issue = props.issue;
-
+  const issue = useIssueStore((state) =>
+    state.issues.find((item) => item.id === props.selectedId),
+  );
+  const updateIssueStatus = useIssueStore((state) => state.updateIssueStatus);
   const handleStartClick = () => {
     if (!issue) return;
-    props.onStatusChange(issue.id, "in_progress");
+    updateIssueStatus(issue.id, "in_progress");
   };
 
   const handleCompleteClick = () => {
     if (!issue) return;
-    props.onStatusChange(issue.id, "done");
+    updateIssueStatus(issue.id, "done");
   };
 
   return (

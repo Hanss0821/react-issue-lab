@@ -1,14 +1,15 @@
-import type { Issue, IssueStatus } from "../types/issue";
+import type { Issue } from "../types/issue";
+import { useIssueStore } from "../store/useIssueStore";
 
 type IssueItemProps = {
   issue: Issue;
-  onStatusChange: (id: Issue["id"], status: IssueStatus) => void;
   onSelect: (id: Issue["id"]) => void;
 };
 
 export function IssueItem(props: IssueItemProps) {
+  const onStatusChange = useIssueStore((state) => state.updateIssueStatus);
   const handleClick = () => {
-    props.onStatusChange(props.issue.id, "done");
+    onStatusChange(props.issue.id, "done");
   };
   const handleSelect = () => {
     props.onSelect(props.issue.id);

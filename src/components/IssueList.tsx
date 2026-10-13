@@ -1,21 +1,20 @@
-import type { Issue, IssueStatus } from "../types/issue";
+import type { Issue } from "../types/issue";
 import { IssueItem } from "./IssueItem";
+import { useIssueStore } from "../store/useIssueStore";
 
 type IssueListProps = {
-  issues: Issue[];
-  onStatusChange: (id: Issue["id"], status: IssueStatus) => void;
   onSelect: (id: Issue["id"]) => void;
 };
 
 export function IssueList(props: IssueListProps) {
+  const issues = useIssueStore((state) => state.issues);
   return (
     <>
       <div className="issue-list">
-        {props.issues.map((issue) => (
+        {issues.map((issue) => (
           <IssueItem
             key={issue.id}
             issue={issue}
-            onStatusChange={props.onStatusChange}
             onSelect={props.onSelect}
           ></IssueItem>
         ))}
