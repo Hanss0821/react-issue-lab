@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import type { Issue, IssueStatus, Subtask } from "../types/issue";
 import { createIssue } from "../types/issue";
-
+import { produce } from "immer";
 type IssueStore = {
   issues: Issue[];
   updateIssueStatus: (id: Issue["id"], status: IssueStatus) => void;
@@ -48,24 +48,38 @@ export const useIssueStore = create<IssueStore>()((set) => ({
     }));
   },
   updateSubtaskCompleted(issueId, subtaskId, completed) {
-    set((state) => ({
-      issues: state.issues.map((issue) => {
-        if (issue.id === issueId && issue.subtasks && issue.subtasks.length) {
-          return {
-            ...issue,
-            subtasks: issue.subtasks.map((subtask) => {
-              if (subtask.id === subtaskId) {
-                return {
-                  ...subtask,
-                  completed,
-                };
-              }
-              return subtask;
-            }),
-          };
-        }
-        return issue;
+    set((state) =>
+      // 可修改的草稿
+      // 不是简单的深拷贝，imnmer通过代理跟踪修改，按需复制
+      produce(state, (draft) => {
+        const issue = draft.issues.find((issue) => issue.id === issueId);
+        if (!issue) return;
+        const subTask = issue.subtasks.find(
+          (subTask) => subTask.id === subtaskId,
+        );
+        if (!subTask) return;
+        subTask.completed = completed;
       }),
-    }));
+    );
   },
 }));
+
+//   {
+//   issues: state.issues.map((issue) => {
+//     if (issue.id === issueId && issue.subtasks && issue.subtasks.length) {
+//       return {
+//         ...issue,
+//         subtasks: issue.subtasks.map((subtask) => {
+//           if (subtask.id === subtaskId) {
+//             return {
+//               ...subtask,
+//               completed,
+//             };
+//           }
+//           return subtask;
+//         }),
+//       };
+//     }
+//     return issue;
+//   }),
+// }
