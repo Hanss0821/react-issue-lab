@@ -10,6 +10,7 @@ type IssueStore = {
     subtaskId: Subtask["id"],
     completed: boolean,
   ) => void;
+  addSubtask: (issueId: Issue["id"], title: string) => void;
 };
 // 两层调用主要是为了 TypeScript 类型推导
 // Store 存数据
@@ -62,6 +63,7 @@ export const useIssueStore = create<IssueStore>()((set) => ({
       }),
     );
   },
+  addSubtask(issueId, title) {},
 }));
 
 //   {

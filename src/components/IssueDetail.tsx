@@ -41,23 +41,30 @@ export function IssueDetail(props: IssueDetailProps) {
           <div className="issue-sub_issue">
             <div className="issue-subtask-title">Subtasks</div>
             {issue.subtasks && issue.subtasks.length > 0 ? (
-              issue.subtasks.map((subtask) => (
-                <div className="issue-subtask" key={subtask.id}>
-                  <div className="issue-subtask-title">{subtask.title}</div>
-                  <div className="issue-subtask-status">
-                    {subtask.completed ? "complete" : "incomplete"}
-                  </div>
-                  <button
-                    className="sub-btn-completed"
-                    disabled={subtask.completed}
-                    onClick={() => {
-                      handleSubCompleteClick(issue.id, subtask.id, true);
-                    }}
-                  >
-                    Completed
-                  </button>
+              <div className="subIssue-list">
+                <div className="panel-status">
+                  completed{" "}
+                  {issue.subtasks.filter((subtask) => subtask.completed).length}
+                  /{issue.subtasks.length}
                 </div>
-              ))
+                {issue.subtasks.map((subtask) => (
+                  <div className="issue-subtask" key={subtask.id}>
+                    <div className="issue-subtask-title">{subtask.title}</div>
+                    <div className="issue-subtask-status">
+                      {subtask.completed ? "complete" : "incomplete"}
+                    </div>
+                    <button
+                      className="sub-btn-completed"
+                      disabled={subtask.completed}
+                      onClick={() => {
+                        handleSubCompleteClick(issue.id, subtask.id, true);
+                      }}
+                    >
+                      Completed
+                    </button>
+                  </div>
+                ))}
+              </div>
             ) : (
               <div className="issue-subtask-empty">no subtasks</div>
             )}
