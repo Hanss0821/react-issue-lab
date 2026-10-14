@@ -1,4 +1,4 @@
-import type { Issue } from "../types/issue";
+import type { Issue, Subtask } from "../types/issue";
 import { useIssueStore } from "../store/useIssueStore";
 type IssueDetailProps = {
   selectedId: Issue["id"] | null;
@@ -15,10 +15,19 @@ export function IssueDetail(props: IssueDetailProps) {
     if (!issue) return;
     updateIssueStatus(issue.id, "in_progress");
   };
-
   const handleCompleteClick = () => {
     if (!issue) return;
     updateIssueStatus(issue.id, "done");
+  };
+  const updateSubtaskCompleted = useIssueStore(
+    (state) => state.updateSubtaskCompleted,
+  );
+  const handleSubCompleteClick = (
+    issueId: Issue["id"],
+    subTaskId: Subtask["id"],
+    completed: boolean,
+  ) => {
+    updateSubtaskCompleted(issueId, subTaskId, completed);
   };
 
   return (
@@ -28,6 +37,30 @@ export function IssueDetail(props: IssueDetailProps) {
           <div className="issue-status">
             <div className="issue-title">{issue.title}</div>
             <div className="issue-status">{issue.status}</div>
+          </div>
+          <div className="issue-sub_issue">
+            <div className="issue-subtask-title">Subtasks</div>
+            {issue.subtasks && issue.subtasks.length > 0 ? (
+              issue.subtasks.map((subtask) => (
+                <div className="issue-subtask" key={subtask.id}>
+                  <div className="issue-subtask-title">{subtask.title}</div>
+                  <div className="issue-subtask-status">
+                    {subtask.completed ? "complete" : "incomplete"}
+                  </div>
+                  <button
+                    className="sub-btn-completed"
+                    disabled={subtask.completed}
+                    onClick={() => {
+                      handleSubCompleteClick(issue.id, subtask.id, true);
+                    }}
+                  >
+                    Completed
+                  </button>
+                </div>
+              ))
+            ) : (
+              <div className="issue-subtask-empty">no subtasks</div>
+            )}
           </div>
           <div className="panel">
             <button className="btn-start" onClick={handleStartClick}>

@@ -1,3 +1,6 @@
+// k作为键只能是string|number|symbol
+type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+
 // 1. 定义三种合法状态
 export type IssueStatus = "todo" | "in_progress" | "done";
 
@@ -7,17 +10,28 @@ export interface Issue {
   title: string;
   status: IssueStatus;
   readonly createdAt: Date;
+  subtasks: Subtask[];
+}
+
+export interface Subtask {
+  readonly id: string;
+  title: string;
+  completed: boolean;
 }
 
 // 3. 创建 Issue 时限制status为todo
 // Omit<Issue, "id" | "createdAt">;
-export type CreateIssueInput = Pick<Issue, "title">;
+export type CreateIssueInput = PartialBy<
+  Pick<Issue, "title" | "subtasks">,
+  "subtasks"
+>;
 
 export function createIssue(input: CreateIssueInput): Issue {
   return {
     id: crypto.randomUUID(),
     title: input.title,
     status: "todo",
+    subtasks: input.subtasks || [],
     createdAt: new Date(),
   };
 }
