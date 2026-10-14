@@ -53,3 +53,12 @@ export type MyPick<T, K extends keyof T> = {
 export type MyOmit<T, K> = {
   [P in keyof T as P extends K ? never : P]: T[P];
 };
+
+// MyPartial 所有属性变可选
+export type MyPartial<T> = {
+  [P in keyof T]?: T[P];
+};
+// MyReadonly 所有属性变只读
+export type MyReadonly<T> = {
+  readonly [P in keyof T]: T[P];
+};
