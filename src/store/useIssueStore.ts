@@ -11,6 +11,11 @@ type IssueStore = {
     completed: boolean,
   ) => void;
   addSubtask: (issueId: Issue["id"], title: string) => void;
+  renameSubtask: (
+    issueId: Issue["id"],
+    subtaskId: Subtask["id"],
+    title: string,
+  ) => void;
 };
 // 两层调用主要是为了 TypeScript 类型推导
 // Store 存数据
@@ -69,6 +74,21 @@ export const useIssueStore = create<IssueStore>()((set) => ({
         const text = title.trim();
         if (!issue || !text) return;
         issue.subtasks.push(createSubTask({ title: text }));
+      }),
+    );
+  },
+  renameSubtask(issueId, subtaskId, title) {
+    const text = title.trim();
+    if (!text) return;
+    set((state) =>
+      produce(state, (draft) => {
+        const issue = draft.issues.find((issue) => issue.id === issueId);
+        if (!issue) return;
+        const subTask = issue.subtasks.find(
+          (subtask) => subtask.id === subtaskId,
+        );
+        if (!subTask) return;
+        subTask.title = text;
       }),
     );
   },

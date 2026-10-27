@@ -1,7 +1,9 @@
-import type { Issue, Subtask } from "../types/issue";
+import type { Issue } from "../types/issue";
 import { useIssueStore } from "../store/useIssueStore";
 import type { ChangeEvent } from "react";
 import { useState } from "react";
+
+import SubtasItem from "./SubtaskItem";
 type IssueDetailProps = {
   selectedId: Issue["id"] | null;
 };
@@ -11,6 +13,7 @@ export function IssueDetail(props: IssueDetailProps) {
   const issue = useIssueStore((state) =>
     state.issues.find((item) => item.id === props.selectedId),
   );
+
   // Action更新数据
   const updateIssueStatus = useIssueStore((state) => state.updateIssueStatus);
   const handleStartClick = () => {
@@ -20,16 +23,6 @@ export function IssueDetail(props: IssueDetailProps) {
   const handleCompleteClick = () => {
     if (!issue) return;
     updateIssueStatus(issue.id, "done");
-  };
-  const updateSubtaskCompleted = useIssueStore(
-    (state) => state.updateSubtaskCompleted,
-  );
-  const handleSubCompleteClick = (
-    issueId: Issue["id"],
-    subTaskId: Subtask["id"],
-    completed: boolean,
-  ) => {
-    updateSubtaskCompleted(issueId, subTaskId, completed);
   };
 
   // 添加子任务
@@ -78,21 +71,11 @@ export function IssueDetail(props: IssueDetailProps) {
                   /{issue.subtasks.length}
                 </div>
                 {issue.subtasks.map((subtask) => (
-                  <div className="issue-subtask" key={subtask.id}>
-                    <div className="issue-subtask-title">{subtask.title}</div>
-                    <div className="issue-subtask-status">
-                      {subtask.completed ? "complete" : "incomplete"}
-                    </div>
-                    <button
-                      className="sub-btn-completed"
-                      disabled={subtask.completed}
-                      onClick={() => {
-                        handleSubCompleteClick(issue.id, subtask.id, true);
-                      }}
-                    >
-                      Completed
-                    </button>
-                  </div>
+                  <SubtasItem
+                    subtask={subtask}
+                    issueId={issue.id}
+                    key={subtask.id}
+                  />
                 ))}
               </div>
             ) : (
