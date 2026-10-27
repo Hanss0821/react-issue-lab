@@ -1,5 +1,7 @@
 import type { Issue, Subtask } from "../types/issue";
 import { useIssueStore } from "../store/useIssueStore";
+import type { ChangeEvent } from "react";
+import { useState } from "react";
 type IssueDetailProps = {
   selectedId: Issue["id"] | null;
 };
@@ -30,6 +32,18 @@ export function IssueDetail(props: IssueDetailProps) {
     updateSubtaskCompleted(issueId, subTaskId, completed);
   };
 
+  // 添加子任务
+  const [newSubTask, setNewSubTask] = useState("");
+  const handleSubTaskInput = (e: ChangeEvent<HTMLInputElement>) => {
+    setNewSubTask(e.currentTarget.value);
+  };
+  const addSubtask = useIssueStore((state) => state.addSubtask);
+  const handleSubTaskAdd = (id: Issue["id"]) => {
+    const title = newSubTask.trim();
+    if (!title) return;
+    addSubtask(id, title);
+    setNewSubTask("");
+  };
   return (
     <div className="issue-detail">
       {issue ? (
@@ -40,6 +54,22 @@ export function IssueDetail(props: IssueDetailProps) {
           </div>
           <div className="issue-sub_issue">
             <div className="issue-subtask-title">Subtasks</div>
+            <div className="add-subtask">
+              <input
+                type="text"
+                placeholder="input new subtask"
+                value={newSubTask}
+                onChange={handleSubTaskInput}
+              />
+              <button
+                className="btn-add-subtask"
+                onClick={() => {
+                  handleSubTaskAdd(issue.id);
+                }}
+              >
+                Add
+              </button>
+            </div>
             {issue.subtasks && issue.subtasks.length > 0 ? (
               <div className="subIssue-list">
                 <div className="panel-status">

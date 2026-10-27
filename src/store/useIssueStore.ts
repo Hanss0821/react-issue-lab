@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import type { Issue, IssueStatus, Subtask } from "../types/issue";
-import { createIssue } from "../types/issue";
+import { createIssue, createSubTask } from "../types/issue";
 import { produce } from "immer";
 type IssueStore = {
   issues: Issue[];
@@ -34,7 +34,6 @@ export const useIssueStore = create<IssueStore>()((set) => ({
     createIssue({ title: "02" }),
     createIssue({ title: "03" }),
   ],
-
   updateIssueStatus: (id, status) => {
     // 默认浅合并顶层字段
     set((state) => ({
@@ -63,7 +62,16 @@ export const useIssueStore = create<IssueStore>()((set) => ({
       }),
     );
   },
-  addSubtask(issueId, title) {},
+  addSubtask(issueId, title) {
+    set((state) =>
+      produce(state, (draft) => {
+        const issue = draft.issues.find((issue) => issue.id === issueId);
+        const text = title.trim();
+        if (!issue || !text) return;
+        issue.subtasks.push(createSubTask({ title: text }));
+      }),
+    );
+  },
 }));
 
 //   {
