@@ -15,17 +15,15 @@ export function IssueItem(props: IssueItemProps) {
     props.onSelect(props.issue.id);
   };
   return (
-    <>
-      <div className="issue-item">
-        <div className="issue-name">{props.issue.title}</div>
-        <div className="issue-status">{props.issue.status}</div>
-        <button disabled={props.issue.status === "done"} onClick={handleClick}>
-          Complete
-        </button>
-        <button className="btn-view" onClick={handleSelect}>
-          View
-        </button>
-      </div>
-    </>
+    <div className="issue-item">
+      <div className="issue-name">{props.issue.title}</div>
+      <div className="issue-status">{props.issue.status}</div>
+      <button disabled={props.issue.status === "done"} onClick={handleClick}>
+        Complete
+      </button>
+      <button className="btn-view" onClick={handleSelect}>
+        View
+      </button>
+    </div>
   );
 }

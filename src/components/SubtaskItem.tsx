@@ -12,12 +12,8 @@ export default function SubtaskItem(props: SubtaskItemProps) {
   const [title, setTitle] = useState("");
   const [isEdit, setIsEdit] = useState(false);
   // event
-  const handleSubCompleteClick = (
-    issueId: Issue["id"],
-    subTaskId: Subtask["id"],
-    completed: boolean,
-  ) => {
-    updateSubtaskCompleted(issueId, subTaskId, completed);
+  const handleSubCompleteClick = () => {
+    updateSubtaskCompleted(issueId, subtask.id, true);
   };
   const handleEdit = () => {
     setTitle(subtask.title);
@@ -46,7 +42,7 @@ export default function SubtaskItem(props: SubtaskItemProps) {
   );
   const renameSubtask = useIssueStore((state) => state.renameSubtask);
   return (
-    <div className="issue-subtask" key={subtask.id}>
+    <div className="issue-subtask">
       <div className="issue-subtask-title">
         {isEdit ? (
           <input
@@ -74,19 +70,13 @@ export default function SubtaskItem(props: SubtaskItemProps) {
           </>
         ) : (
           <>
-            <button
-              className="sub-btn-edit"
-              disabled={subtask.completed}
-              onClick={handleEdit}
-            >
+            <button className="sub-btn-edit" onClick={handleEdit}>
               Edit
             </button>
             <button
               className="sub-btn-completed"
               disabled={subtask.completed}
-              onClick={() => {
-                handleSubCompleteClick(issueId, subtask.id, true);
-              }}
+              onClick={handleSubCompleteClick}
             >
               Completed
             </button>

@@ -93,23 +93,3 @@ export const useIssueStore = create<IssueStore>()((set) => ({
     );
   },
 }));
-
-//   {
-//   issues: state.issues.map((issue) => {
-//     if (issue.id === issueId && issue.subtasks && issue.subtasks.length) {
-//       return {
-//         ...issue,
-//         subtasks: issue.subtasks.map((subtask) => {
-//           if (subtask.id === subtaskId) {
-//             return {
-//               ...subtask,
-//               completed,
-//             };
-//           }
-//           return subtask;
-//         }),
-//       };
-//     }
-//     return issue;
-//   }),
-// }

@@ -9,16 +9,14 @@ type IssueListProps = {
 export function IssueList(props: IssueListProps) {
   const issues = useIssueStore((state) => state.issues);
   return (
-    <>
-      <div className="issue-list">
-        {issues.map((issue) => (
-          <IssueItem
-            key={issue.id}
-            issue={issue}
-            onSelect={props.onSelect}
-          ></IssueItem>
-        ))}
-      </div>
-    </>
+    <div className="issue-list">
+      {issues.map((issue) => (
+        <IssueItem
+          key={issue.id}
+          issue={issue}
+          onSelect={props.onSelect}
+        ></IssueItem>
+      ))}
+    </div>
   );
 }
