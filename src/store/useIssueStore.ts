@@ -19,6 +19,14 @@ type IssueStore = {
 };
 // 两层调用主要是为了 TypeScript 类型推导
 // Store 存数据
+
+function findIssue(issues: Issue[], id: Issue["id"]) {
+  return issues.find((issue) => issue.id === id);
+}
+
+function findSubtask(subtasks: Subtask[], id: Subtask["id"]) {
+  return subtasks.find((subtask) => subtask.id === id);
+}
 export const useIssueStore = create<IssueStore>()((set) => ({
   issues: [
     createIssue({
@@ -57,11 +65,9 @@ export const useIssueStore = create<IssueStore>()((set) => ({
       // 可修改的草稿
       // 不是简单的深拷贝，imnmer通过代理跟踪修改，按需复制
       produce(state, (draft) => {
-        const issue = draft.issues.find((issue) => issue.id === issueId);
+        const issue = findIssue(draft.issues, issueId);
         if (!issue) return;
-        const subTask = issue.subtasks.find(
-          (subTask) => subTask.id === subtaskId,
-        );
+        const subTask = findSubtask(issue.subtasks, subtaskId);
         if (!subTask) return;
         subTask.completed = completed;
       }),
@@ -70,7 +76,7 @@ export const useIssueStore = create<IssueStore>()((set) => ({
   addSubtask(issueId, title) {
     set((state) =>
       produce(state, (draft) => {
-        const issue = draft.issues.find((issue) => issue.id === issueId);
+        const issue = findIssue(draft.issues, issueId);
         const text = title.trim();
         if (!issue || !text) return;
         issue.subtasks.push(createSubTask({ title: text }));
@@ -82,11 +88,9 @@ export const useIssueStore = create<IssueStore>()((set) => ({
     if (!text) return;
     set((state) =>
       produce(state, (draft) => {
-        const issue = draft.issues.find((issue) => issue.id === issueId);
+        const issue = findIssue(draft.issues, issueId);
         if (!issue) return;
-        const subTask = issue.subtasks.find(
-          (subtask) => subtask.id === subtaskId,
-        );
+        const subTask = findSubtask(issue.subtasks, subtaskId);
         if (!subTask) return;
         subTask.title = text;
       }),
