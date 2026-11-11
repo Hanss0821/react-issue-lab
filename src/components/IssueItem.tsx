@@ -1,12 +1,12 @@
 import type { Issue } from "../types/issue";
 import { useIssueStore } from "../store/useIssueStore";
-
+import { memo } from "react";
 type IssueItemProps = {
   issue: Issue;
   onSelect: (id: Issue["id"]) => void;
 };
 
-export function IssueItem(props: IssueItemProps) {
+export const IssueItem = memo(function IssueItem(props: IssueItemProps) {
   const onStatusChange = useIssueStore((state) => state.updateIssueStatus);
   const handleClick = () => {
     onStatusChange(props.issue.id, "done");
@@ -14,6 +14,7 @@ export function IssueItem(props: IssueItemProps) {
   const handleSelect = () => {
     props.onSelect(props.issue.id);
   };
+  console.log("IssueItem render", props.issue.title);
   return (
     <div className="issue-item">
       <div className="issue-name">{props.issue.title}</div>
@@ -26,4 +27,4 @@ export function IssueItem(props: IssueItemProps) {
       </button>
     </div>
   );
-}
+});

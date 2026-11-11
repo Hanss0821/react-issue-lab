@@ -1,12 +1,13 @@
 import { useIssueStore } from "../store/useIssueStore";
 
-export function IssueStats() {
+export function IssueStatus() {
   const issues = useIssueStore((state) => state.issues);
   const progressCount = issues.filter(
     (issue) => issue.status === "in_progress",
   ).length;
   const doneCount = issues.filter((issue) => issue.status === "done").length;
   const todoCount = issues.filter((issue) => issue.status === "todo").length;
+  console.log("IssueStats render");
   return (
     <div className="issue-stats">
       <div className="total">total: {issues.length}</div>

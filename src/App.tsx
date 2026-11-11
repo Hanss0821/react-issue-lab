@@ -1,19 +1,21 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useCallback } from "react";
+
 import type { Issue } from "./types/issue";
 import { IssueList } from "./components/IssueList";
-import { IssueStats } from "./components/IssueStats";
+import { IssueStatus } from "./components/IssueStatus";
 import { IssueDetail } from "./components/IssueDetail";
 function App() {
   // issue状态由store管理
   const [selectedId, setSelectedId] = useState<Issue["id"] | null>(null);
-  function updateSelectedId(id: Issue["id"]) {
+  const updateSelectedId = useCallback((id: Issue["id"]) => {
     setSelectedId(id);
-  }
+  }, []);
+  console.log("App render");
   return (
     <main>
       <IssueList onSelect={updateSelectedId} />
-      <IssueStats />
+      <IssueStatus />
       <IssueDetail selectedId={selectedId} />
     </main>
   );

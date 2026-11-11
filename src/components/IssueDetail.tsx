@@ -22,7 +22,7 @@ export function IssueDetail(props: IssueDetailProps) {
     if (!issue) return;
     updateIssueStatus(issue.id, "done");
   };
-
+  console.log("IssueDetail render", props.selectedId);
   // jsx符合js编码直觉，return先行
   if (!issue) {
     return (

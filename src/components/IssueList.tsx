@@ -21,6 +21,7 @@ export function IssueList(props: IssueListProps) {
   const handleIssueListStatus = (status: ListStatus) => {
     setVisibleStatus(status);
   };
+  console.log("IssueList render");
   return (
     <>
       <div className="issue-status">
