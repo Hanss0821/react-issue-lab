@@ -1,6 +1,6 @@
 import type { Issue, Subtask } from "../types/issue";
 import { useIssueStore } from "../store/useIssueStore";
-import type { ChangeEvent } from "react";
+import type { ChangeEvent, FormEvent } from "react";
 import { useState } from "react";
 type SubtaskItemProps = {
   issueId: Issue["id"];
@@ -41,8 +41,13 @@ export default function SubtaskItem(props: SubtaskItemProps) {
     (state) => state.updateSubtaskCompleted,
   );
   const renameSubtask = useIssueStore((state) => state.renameSubtask);
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (isEdit) handleSave();
+  };
+
   return (
-    <div className="issue-subtask">
+    <form className="issue-subtask" onSubmit={onSubmit}>
       <div className="issue-subtask-title">
         {isEdit ? (
           <input
@@ -61,21 +66,30 @@ export default function SubtaskItem(props: SubtaskItemProps) {
       <div className="action-panel">
         {isEdit ? (
           <>
-            <button className="sub-btn-cancel" onClick={handleCancel}>
+            <button
+              className="sub-btn-cancel"
+              type="button"
+              onClick={handleCancel}
+            >
               Cancel
             </button>
-            <button className="sub-btn-save" onClick={handleSave}>
+            <button
+              className="sub-btn-save"
+              type="submit"
+              disabled={!title.trim()}
+            >
               Save
             </button>
           </>
         ) : (
           <>
-            <button className="sub-btn-edit" onClick={handleEdit}>
+            <button className="sub-btn-edit" type="button" onClick={handleEdit}>
               Edit
             </button>
             <button
               className="sub-btn-completed"
               disabled={subtask.completed}
+              type="button"
               onClick={handleSubCompleteClick}
             >
               Completed
@@ -83,6 +97,6 @@ export default function SubtaskItem(props: SubtaskItemProps) {
           </>
         )}
       </div>
-    </div>
+    </form>
   );
 }

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { Issue } from "../types/issue";
-import type { ChangeEvent } from "react";
+import type { ChangeEvent, FormEvent } from "react";
 import { useIssueStore } from "../store/useIssueStore";
 
 type AddSubtaskFormProps = { issueId: Issue["id"] };
@@ -18,8 +18,12 @@ export default function AddSubtaskForm(props: AddSubtaskFormProps) {
     addSubtask(id, title);
     setNewSubTask("");
   };
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    handleSubTaskAdd(issueId);
+  };
   return (
-    <div className="subtask-form">
+    <form className="subtask-form" onSubmit={onSubmit}>
       <div className="add-subtask">
         <input
           type="text"
@@ -29,13 +33,12 @@ export default function AddSubtaskForm(props: AddSubtaskFormProps) {
         />
         <button
           className="btn-add-subtask"
-          onClick={() => {
-            handleSubTaskAdd(issueId);
-          }}
+          disabled={!newSubTask.trim()}
+          type="submit"
         >
           Add
         </button>
       </div>
-    </div>
+    </form>
   );
 }

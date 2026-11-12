@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import type { Issue, IssueStatus, Subtask } from "../types/issue";
-import { createIssue, createSubTask } from "../types/issue";
+import { createIssue, createSubTask } from "../domain/issue";
 import { produce } from "immer";
 type IssueStore = {
   issues: Issue[];

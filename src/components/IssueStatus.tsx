@@ -1,18 +1,7 @@
-import { useIssueStore } from "../store/useIssueStore";
+import useIssueStatus from "../hooks/useIssueStatus";
 
 export function IssueStatus() {
-  // 从store获取数量
-  const totalCount = useIssueStore((state) => state.issues.length);
-  const todoCount = useIssueStore(
-    (state) => state.issues.filter((issue) => issue.status === "todo").length,
-  );
-  const progressCount = useIssueStore(
-    (state) =>
-      state.issues.filter((issue) => issue.status === "in_progress").length,
-  );
-  const doneCount = useIssueStore(
-    (state) => state.issues.filter((issue) => issue.status === "done").length,
-  );
+  const { totalCount, todoCount, progressCount, doneCount } = useIssueStatus();
   console.log("IssueStats render");
   return (
     <div className="issue-stats">
